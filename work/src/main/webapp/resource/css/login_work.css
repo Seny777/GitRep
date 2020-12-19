@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+#box {
+	margin: 300px auto;
+	width: 650px;
+	height: 350px;
+	border: 2px #f0f0f0 solid;
+}
+
+input[type=text] {
+	width: 500px;
+	font-family: 微软雅黑;
+}
+
+input[type=button] {
+	background: #adf1f4;
+	width: 150px;
+	height: 30px;
+	border-radius: 5px;
+}
+
+#submit {
+	width: 200px;
+	background-color: rgba(200, 126, 235, 0.5);
+	border-radius: 20%;
+}
+
+#title {
+	border-bottom: 2px #f0f0f0 solid;
+}
+
+.mess {
+	width: 600px;
+	margin: 30px auto;
+	text-align: center;
+	margin: 30px auto;
+}
+
+input[name=code] {
+	width: 300px;
+}
+
+#code {
+	margin-right: 50px;
+	float: right;
+	width: 100px;
+	height: 30px;
+	background-color: rgb(100, 100, 224);
+	float: right;
+}
+
+#reload {
+	float: right;
+}
+
+body {
+	width: 80%;
+	margin: 100px auto;
+	font-family: 'trebuchet MS', 'Lucida sans', Arial;
+	font-size: 14px;
+	color: #444;
+	background: url(../css/img/bj2.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<!-- 1.写一个注解组件扫描器 -->
+	<context:component-scan base-package="com.icss"/>
+	   
+	
+	<!-- 2.引入外部属性文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<!-- 3.写一个数据源dataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	<!-- 4.写一个sqlSessionFactory,mybatis基本配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 批量取别名 -->
+		<property name="typeAliasesPackage" value="com.icss.entity"/>
+		<!-- 引入外部mapper映射文件 -->
+		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+		<!-- 列名下划线与实体类匹配 -->
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="mapUnderscoreToCamelCase" value="true"/>
+			</bean>
+		</property>
+		<!-- 使用pageHelper分页插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+							helperDialect=mysql
+							reasonable=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<!-- 5.生成dao层mapper代理 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.icss.dao"/>
+	</bean>
+	
+	<!-- 6.写一个事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 注入数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+    
+    
+    <!-- 7.spring声明式事务 -->
+    <!-- 注解方式实现事务属性和管理器 -->
+    <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+    <!-- 配置事务属性和管理器 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    	<tx:attributes>
+    	   <tx:method name="*"/>
+    	</tx:attributes>
+    </tx:advice>
+    
+    <!-- 8.配置事务切点，并把切点与事务属性关联起来 -->
+    <aop:config>
+        <!--  切点 -->
+    	<aop:pointcut expression="execution(* com.icss.service.*.*(..))" id="pointCut"/>
+    	<aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut"/>
+    </aop:config> 
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.dao.BookDao">
+    <select id="findAllBook" resultType="BookVo">
+        select b.bid,b.bname,s.taddress,b.price
+        from tb_book b,store s
+        where b.tid=s.tid
+        <if test="bname!=null and bname!=''">
+            and bname like concat('%',#{bname},'%')
+        </if>
+    </select>
+
+    <insert id="addBook">
+        insert into tb_book values(null,#{bname},#{price},#{author},#{tid})
+    </insert>
+
+    <update id="updateBook">
+        update tb_book set bname=#{bname},price=#{price},author=#{author},tid=#{tid} where bid=#{bid}
+    </update>
+
+    <delete id="deleteBook">
+        delete from tb_book where bid in(${bids})
+    </delete>
+
+    <select id="findBookById" resultType="Book">
+        select *from tb_book where bid=#{bid}
+    </select>
+</mapper>
