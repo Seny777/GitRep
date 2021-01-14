@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加学生</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{/resource/css/index.css}">
+</head>
+<body>
+    <form>
+        <table>
+            <tr>
+                <th>网站名称</th>
+                <td>
+                    <input type="text" name="wname"/>
+                </td>
+            </tr>
+            <tr>
+                <th>网站URL</th>
+                <td>
+                    <input type="text" name="url">
+                </td>
+            </tr>
+            <tr>
+                <th>网站类型</th>
+                <td>
+                    <select name="typeId">
+                        <div th:each="wb:${wbt}">
+                            <option th:value="${wb.id}" th:text="${wb.tname}"></option>
+                        </div>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>访问次数</th>
+                <td>
+                    <input type="text" name="accessNum" value="0" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <th>最近一次访问时间</th>
+                <td>
+                    <input type="date" name="lastAccessDate" onclick="WdatePicker()">
+                </td>
+            </tr>
+            <tr>
+                <th>创建时间</th>
+                <td>
+                    <input type="date" name="createDate" onclick="WdatePicker()">
+                </td>
+            </tr>
+            <tr>
+                <th>创建人</th>
+                <td>
+                    <select name="createUserId">
+                        <div th:each="user:${users}">
+                            <option th:value="${user.id}" th:text="${user.uname}"></option>
+                        </div>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" value="保存" onclick="addWeb()"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+<script type="text/javascript" th:src="@{/resource/jquery/jquery-3.2.1.js}" ></script>
+<script type="text/javascript" th:src="@{/resource/My97DatePicker/WdatePicker.js}"></script>
+<script type="text/javascript">
+        function addWeb() {
+            $.post(
+                "/add",$("form").serialize(),
+                function (obj) {
+                    if(obj){
+                        alert("添加成功!");
+                        location.href="/findWebVo";
+                    }else{
+                        alert("添加成功!");
+                    }
+                },"json"
+            );
+        }
+</script>
+</body>
+</html>

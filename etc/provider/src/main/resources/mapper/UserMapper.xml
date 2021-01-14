@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.dao.UserMapper">
+    <select id="findAllUser" resultType="User">
+        select *from t_user
+    </select>
+
+    <update id="addNum">
+        update t_user set website_num=website_num+1 where id=#{id}
+    </update>
+
+    <update id="delNum">
+        update t_user set website_num=website_num-1 where id=#{id}
+    </update>
+</mapper>

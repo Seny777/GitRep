@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.dao.WebsiteMapper">
+    <select id="findWebsite" resultType="WebVo">
+        select w.id,w.wname,w.url,wt.tname,w.access_num,w.last_access_date,w.create_date,u.uname
+        from t_website w,t_website_type wt,t_user u
+        where w.type_id=wt.id
+        and w.create_user_id=u.id
+        <if test="wname!=null and wname!=''">
+            and w.wname like concat('%',#{wname},'%')
+        </if>
+        <if test="uname!=null and uname!=''">
+            and u.uname like concat('%',#{uname},'%')
+        </if>
+        order by w.create_date desc
+    </select>
+
+    <insert id="addWeb">
+        insert into t_website values(null,#{wname},#{url},#{typeId},#{accessNum},#{lastAccessDate},#{createDate},#{createUserId})
+    </insert>
+
+    <update id="visit">
+        update t_websit set access_num=access_num+1 where id=#{id}
+    </update>
+    <delete id="delWeb">
+        delete from t_website where id=#{id}
+    </delete>
+
+    <select id="selById" resultType="Website">
+        select *from t_website where id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+#端口号
+server:
+  port: 8001
+
+spring:
+  application:
+    name: provider-service  #服务名称
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql:///etc?characterEncoding=utf-8&&serverTimezone=GMT%2B8
+
+mybatis:
+  type-aliases-package: com.icss.entity #起别名
+  mapper-locations: mapper/*Mapper.xml  #mapper文件位置
+  configuration:
+    map-underscore-to-camel-case: true
+
+#pageHelper配置
+pagehelper:
+  auto-dialect: mysql
+  reasonable: true
+
+logging:
+  level:
+    root: info
+    com:
+      icss:
+          dao: debug
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    #lease-renewal-interval-in-seconds: 5 #服务续约（renew）的间隔，默认为30秒
+    #lease-expiration-duration-in-seconds: 10 #服务失效时间，默认值90秒
+
+
+

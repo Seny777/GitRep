@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link  rel="stylesheet" type="text/css" th:href="@{/resource/css/index.css}">
+    <title>网站信息列表</title>
+</head>
+<body>
+        <h1>网站信息列表</h1>
+        <hr>
+        <table>
+            <tr>
+                <td colspan="9">
+                    <form id="findform" th:action="@{/findWebVo}" method="post">
+                        <input type="hidden" name="pageNum" id="pageNum" th:value="${map.pageNum}"/>
+                        <input  name="wname" placeholder="网站名称" th:value="${map.wname}">
+                        <input  name="uname" placeholder="创建人" th:value="${map.uname}">
+                        <button type="submit">查询</button>
+                    </form>
+                    <input type="button" value="添加网站" onclick="toadd()">
+                </td>
+            </tr>
+            <tr>
+                <th>序号</th>
+                <th>网站名称</th>
+                <th>网站URL</th>
+                <th>网站类型</th>
+                <th>访问次数</th>
+                <th>最近一次访问时间</th>
+                <th>创建时间</th>
+                <th>创建人</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="web:${page.list}">
+                <td th:text="${web.id}"></td>
+                <td th:text="${web.wname}"></td>
+                <td th:text="${web.url}"></td>
+                <td th:text="${web.tname}"></td>
+                <td th:text="${web.accessNum}"></td>
+                <td th:text="${web.lastAccessDate}"></td>
+                <td th:text="${web.createDate}"></td>
+                <td th:text="${web.uname}"></td>
+                <td>
+                    <input type="button" value="删除" th:onclick="'javascript:del(\''+${web.id}+'\')'"/>
+                    <a th:href="${web.url}" th:onclick="'javascript:visit(\''+${web.id}+'\')'">访问</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9">
+                 当前第<font th:text="${page.pageNum}"></font>/<font th:text="${page.pages}"></font>页/共<font th:text="${page.total}"></font>条数据</span>
+                    <input type="button" value="首页" onclick="fy(1)"/>
+                    <input type="button" value="上一页" th:onclick="'javascript:fy(\''+${page.isFirstPage?1:page.prePage}+'\')'"/>
+                    <input type="button" value="下一页" th:onclick="'javascript:fy(\''+${page.isLastPage?page.pages:page.nextPage}+'\')'"/>
+                    <input type="button" value="尾页" th:onclick="'javascript:fy(\''+${page.pages}+'\')'"/>
+                </td>
+            </tr>
+        </table>
+<script type="text/javascript" th:src="@{/resource/jquery/jquery-3.2.1.js}" ></script>
+<script type="text/javascript" th:src="@{/resource/My97DatePicker/WdatePicker.js}"></script>
+<script type="text/javascript">
+    function fy(pageNum){
+        //给pageNum赋值
+        $("#pageNum").val(pageNum);
+        $("#findform").submit();
+    }
+    function del(wid) {
+        $.post(
+            "/del",{wid:wid},
+            function (obj) {
+                if(obj){
+                    alert("删除成功!");
+                    location.href="/findWebVo";
+                }else{
+                    alert("删除成功!");
+                }
+            },"json"
+        );
+    }
+    function visit(wid) {
+        location.href="/visit?wid="+wid;
+    }
+    function toadd() {
+        location.href="/toadd";
+    }
+</script>
+</body>
+</html>

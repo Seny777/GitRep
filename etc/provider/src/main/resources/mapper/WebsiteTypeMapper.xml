@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.dao.WebsiteTypeMapper">
+    <select id="findAllWebType" resultType="WebsiteType">
+        select *from t_website_type
+    </select>
+
+    <update id="addNum">
+        update t_website_type set website_num=website_num+1 where id=#{id}
+    </update>
+
+    <update id="delNum">
+        update t_website_type set website_num=website_num-1 where id=#{id}
+    </update>
+</mapper>

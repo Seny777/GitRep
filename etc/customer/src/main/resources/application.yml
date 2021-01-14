@@ -1,0 +1,55 @@
+#端口号
+server:
+  port: 8002
+
+
+spring:
+  application:
+    name: customer-service #服务名称
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql:///etc?characterEncoding=utf-8&&serverTimezone=GMT%2B8
+  thymeleaf:
+    prefix:
+      classpath: /templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka/
+    #fetch-registry: true #从服务中心拉取服务列表
+    #registry-fetch-interval-seconds: 30 #默认值是30
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  #server:
+    #enable-self-preservation: false #true默认不写情况下，自我保护模式是打开,false是关闭自我保护模式
+    #eviction-interval-timer-in-ms: 60000 #每隔60秒，扫描失败服务的间隔时间（默认不写情况下为60*1000）
+ribbon:
+  eureka:
+    enabled: true
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolatin:
+          thread:
+            timeoutInMilliseconds: 100000
+
+#pageHelper配置
+pagehelper:
+  auto-dialect: mysql
+  reasonable: true
